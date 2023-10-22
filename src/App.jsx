@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState,useRef } from "react"
 import './App.css'
 
 export default function () {
@@ -6,13 +6,17 @@ export default function () {
     const [completed, setCompleted] = useState(JSON.parse(localStorage.getItem('completed'))||[])
     const [activity, setActivity] = useState({text:'',status:false,id:null})
     const [isActive, setActive] = useState(completed.length||false);
+    const ref = useRef(null)
     const addTask = () => {
         if (activity.text.length) {
             SetToDoList([...ToDoList, {...activity,id: Math.random()*Date.now()}]);
             setActivity({text:''})
+        }else{
+            ref.current.focus()
         }
     }
     useEffect(()=>{
+        ref.current.focus()
         localStorage.setItem('todolist',JSON.stringify(ToDoList))
         localStorage.setItem('completed',JSON.stringify(completed))
     },[ToDoList,completed])
@@ -21,7 +25,7 @@ export default function () {
             <div className="input">
                 <h1 style={{ textAlign: "center" }}>ToDoList :)</h1>
                 {/* <hr /> */}
-                <input value={activity.text} onKeyUp={(e)=>{e.key==='Enter'&&addTask()}} style={{ height: "45px", marginTop: "50px", textAlign: "center", 'textTransform': "capitalize" }} onChange={(e) => { setActivity({...activity,text:e.target.value}); }} className="form-control text" />
+                <input ref={ref} value={activity.text} onKeyUp={(e)=>{e.key==='Enter'&&addTask()}} style={{ height: "45px", marginTop: "50px", textAlign: "center", 'textTransform': "capitalize" }} onChange={(e) => { setActivity({...activity,text:e.target.value}); }} className="form-control text" />
                 <button className="btnAdd" onClick={addTask}>Add</button>
                 <hr /> <div className="actions">
                     <div className="completed">
