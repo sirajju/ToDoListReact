@@ -23,7 +23,8 @@ export default function () {
     return (
         <div style={{ width: '500px' }}>
             <div className="input">
-                <h1 style={{ textAlign: "center" }}>ToDoList :)</h1>
+                <h1 style={{ textAlign: "center" }}>ToDoList :)
+                <p style={{fontSize:'13px',color:'red'}}>By sirajju</p></h1>
                 {/* <hr /> */}
                 <input ref={ref} value={activity.text} onKeyUp={(e)=>{e.key==='Enter'&&addTask()}} style={{ height: "45px", marginTop: "50px", textAlign: "center", 'textTransform': "capitalize" }} onChange={(e) => { setActivity({...activity,text:e.target.value}); }} className="form-control text" />
                 <button className="btnAdd" onClick={addTask}>Add</button>
