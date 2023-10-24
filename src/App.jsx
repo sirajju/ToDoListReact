@@ -8,7 +8,7 @@ export default function () {
     const [isActive, setActive] = useState(completed.length||false);
     const ref = useRef(null)
     const addTask = () => {
-        if (activity.text.length) {
+        if (activity.text.trim().length) {
             SetToDoList([...ToDoList, {...activity,id: Math.random()*Date.now()}]);
             setActivity({text:''})
         }else{
