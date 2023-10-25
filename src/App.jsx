@@ -6,13 +6,19 @@ export default function () {
     const [completed, setCompleted] = useState(JSON.parse(localStorage.getItem('completed'))||[])
     const [activity, setActivity] = useState({text:'',status:false,id:null})
     const [isActive, setActive] = useState(completed.length||false);
+    const [error,setError] = useState('')
     const ref = useRef(null)
     const addTask = () => {
-        if (activity.text.trim().length) {
-            SetToDoList([...ToDoList, {...activity,id: Math.random()*Date.now()}]);
-            setActivity({text:''})
+        if(!ToDoList.some((ts)=>ts.text===activity.text)){
+            if (activity.text.trim().length) {
+                SetToDoList([...ToDoList, {...activity,id: Math.random()*Date.now()}]);
+                setActivity({text:''})
+            }else{
+                setError('Please enter the task first')
+                ref.current.focus()
+            }
         }else{
-            ref.current.focus()
+            setError('Complete the same activity first!!')
         }
     }
     useEffect(()=>{
@@ -26,7 +32,8 @@ export default function () {
                 <h1 style={{ textAlign: "center" }}>ToDoList :)
                 <p style={{fontSize:'13px',color:'red'}}>By sirajju</p></h1>
                 {/* <hr /> */}
-                <input ref={ref} value={activity.text} onKeyUp={(e)=>{e.key==='Enter'&&addTask()}} style={{ height: "45px", marginTop: "50px", textAlign: "center", 'textTransform': "capitalize" }} onChange={(e) => { setActivity({...activity,text:e.target.value}); }} className="form-control text" />
+                <input ref={ref} value={activity.text} onKeyUp={(e)=>{e.key==='Enter'&&addTask()}} style={{ height: "45px", marginTop: "50px", textAlign: "center", 'textTransform': "capitalize" }} onChange={(e) => { setActivity({...activity,text:e.target.value});setError('') }} className="form-control text" />
+                <p style={{fontSize:'13px',color:'red'}}>{error}</p>
                 <button className="btnAdd" onClick={addTask}>Add</button>
                 <hr /> <div className="actions">
                     <div className="completed">
@@ -86,7 +93,7 @@ export default function () {
                     )
                 })}
             </div>
-
         </div>
+        
     )
 }
